@@ -19,6 +19,7 @@ client.slashcommands = new Collection()
 const rest = new REST({version:'9'}).setToken(token)
 
 client.on("interactionCreate",async interaction =>{
+    if(interaction.guild.id == '954182077371285564')
     if(!interaction.isCommand()) return;
     const command = client.slashcommands.get(interaction.commandName)
     if (!command) return
