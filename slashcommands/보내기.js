@@ -11,11 +11,16 @@ module.exports = {
             .setName("이름")
             .setDescription("전송시 사용될 이름을 알려주세요.")
             .setRequired(true))
-        .addStringOption(option => option
-            .setName("내용")
-            .setDescription("전송될 메세지를 알려주세요.")
-            .setRequired(true)
-        ),
+            .addStringOption(option => option
+                .setName("내용")
+                .setDescription("전송될 메세지를 알려주세요.")
+                .setRequired(true)
+            )
+            .addStringOption(option => option
+                .setName("이미지링크")
+                .setDescription("봇 이미지를 추가하시려면 입력해주세요..")
+                .setRequired(false)
+            ),
     async execute(interaction) {
         if (cooldown.has(interaction.user.id)) {
             return interaction.reply({
@@ -37,12 +42,19 @@ module.exports = {
         interaction.reply({ content: `전송완료`, ephemeral: true })
         const text1 = interaction.options.getString("이름")
         const text2 = interaction.options.getString("내용")
+        if(text2 == "@everyone") return;
+        if(text2 == "@here") return;
+        const text3 = interaction.options.getString("이미지링크") || `https://img.koreadev.co.kr/ddd.png`
+        
+
+
+        
         const webhookClient = new WebhookClient({ id: webhookId, token: webhookToken });
         console.log(`시간 : <t:${time}> | ${interaction.user.tag}(${interaction.user.id}) | ${text1} | ${text2}`)
         webhookClient.send({
             content: text2,
             username: text1,
-            avatarURL: 'https://img.koreadev.co.kr/ddd.png'
+            avatarURL: text3
         });
     }
 }
